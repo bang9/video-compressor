@@ -16,12 +16,12 @@ async function encodingDir(callback?: IEncodingCallback) {
 
   const {
     filePaths: inputDir,
-    canceled: inputCanceled
+    canceled: inputCanceled,
   } = await dialog.showOpenDialog({
     title: '입력 파일 폴더',
     message: '동영상이 들어있는 폴더를 선택하세요',
     buttonLabel: '선택',
-    properties: ['openDirectory']
+    properties: ['openDirectory'],
   });
 
   if (inputCanceled) {
@@ -37,12 +37,12 @@ async function encodingDir(callback?: IEncodingCallback) {
 
   const {
     filePaths: outputPath,
-    canceled: outputCanceled
+    canceled: outputCanceled,
   } = await dialog.showOpenDialog({
     title: '출력 파일 폴더',
     message: '동영상이 나올 폴더를 선택하세요',
     buttonLabel: '확인',
-    properties: ['openDirectory']
+    properties: ['openDirectory'],
   });
 
   if (outputCanceled) {
@@ -65,13 +65,13 @@ async function encodingDir(callback?: IEncodingCallback) {
         .format('mp4')
         .size('?x540')
         .addOption(['-movflags', '+faststart', '-threads', '0'])
-        .on('progress', progress => {
+        .on('progress', (progress) => {
           if (callback) {
             callback({
               current: index + 1,
               total: inputPaths.length,
               progress:
-                ((totalProgress + progress.percent) / fullProgress) * 100
+                ((totalProgress + progress.percent) / fullProgress) * 100,
             });
           }
         })
@@ -85,7 +85,7 @@ async function encodingDir(callback?: IEncodingCallback) {
             });
           }
         })
-        .on('error', err => {
+        .on('error', (err) => {
           reject(err);
         })
         .save(path.join(outputDir, path.basename(inputPath)));
@@ -101,7 +101,7 @@ const openAlert = (action?: Function) => {
       message: '폴더를 열어볼까요?',
       detail: '확인을 누르면 출력폴더가 열립니다.',
       buttons: ['확인', '아니오'],
-      defaultId: 0
+      defaultId: 0,
     })
     .then(({ response }) => {
       console.log(response);
@@ -114,6 +114,6 @@ const openAlert = (action?: Function) => {
 };
 
 const services = {
-  encodingDir
+  encodingDir,
 };
 export default services;

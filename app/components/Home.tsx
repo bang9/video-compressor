@@ -39,7 +39,7 @@ export default function Home() {
 }
 
 const ProgressBar = styled.div<{ progress: number }>`
-  width: ${props => Math.round(props.progress) + '%'};
+  width: ${(props) => Math.round(props.progress) + '%'};
   height: 15px;
   background-color: #ff873f;
   transition: width 0.1s ease 0s;
