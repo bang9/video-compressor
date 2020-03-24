@@ -5185,6 +5185,11 @@ ffmpeg-static-electron@^2.0.1:
   resolved "https://registry.yarnpkg.com/ffmpeg-static-electron/-/ffmpeg-static-electron-2.0.1.tgz#edaa332d2a7109262211533aa0996eda793db2f7"
   integrity sha512-tLOZJu2PJbDT7oMPhaAmmTZEZZms9R9D2FyhqsBrGlVhfqMi/ipuwNdogwk0+QEnDKaPhXwIgdnkd5Gn5tDXjw==
 
+ffprobe-static-electron@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ffprobe-static-electron/-/ffprobe-static-electron-2.0.0.tgz#45b580fac7aad2e46c86d37902387adbb9208ce5"
+  integrity sha512-Lhi0coa0FfJljn91J2ASv7mmAiIWpiF42VWUUxnJh+pgA2P2Ym4JYt9tlz2wJSBddaN0Cmr+C5fTc1vR2fKXRA==
+
 figgy-pudding@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.1.tgz#862470112901c727a0e495a80744bd5baa1d6790"

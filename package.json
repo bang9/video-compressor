@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
+  "name": "simple-video-compressor",
+  "productName": "Compressor",
   "version": "1.1.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "description": "simple video compressor made with electron + ffmpeg",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
@@ -49,8 +49,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "Compressor",
+    "appId": "com.bang9dev.compressor",
     "files": [
       "dist/",
       "node_modules/",
@@ -59,6 +59,18 @@
       "main.prod.js.map",
       "package.json"
     ],
+    "extraFiles": [
+      "node_modules/ffmpeg-static-electron/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffprobe-static-electron/bin/${os}/${arch}/ffprobe"
+    ],
+    "mac": {
+      "files": [
+        "!node_modules/ffmpeg-static-electron/bin/win${/*}",
+        "!node_modules/ffmpeg-static-electron/bin/linux{/*}",
+        "!node_modules/ffprobe-static-electron/bin/win${/*}",
+        "!node_modules/ffprobe-static-electron/bin/linux{/*}"
+      ]
+    },
     "dmg": {
       "contents": [
         {
@@ -93,8 +105,8 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate",
+      "owner": "bang9",
+      "repo": "compressor",
       "private": false
     }
   },
@@ -258,6 +270,7 @@
     "electron-log": "^4.0.6",
     "electron-updater": "^4.2.0",
     "ffmpeg-static-electron": "^2.0.1",
+    "ffprobe-static-electron": "^2.0.0",
     "fluent-ffmpeg": "fluent-ffmpeg/node-fluent-ffmpeg",
     "history": "^4.10.1",
     "react": "^16.12.0",
