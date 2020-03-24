@@ -10,7 +10,7 @@ import path from 'path';
 
 const statics = {
   ffmpeg: ffmpegStatic,
-  ffprobe: ffprobeStatic
+  ffprobe: ffprobeStatic,
 };
 
 const getPath = (type: 'ffprobe' | 'ffmpeg') =>
