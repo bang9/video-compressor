@@ -26,7 +26,6 @@ jobs:
       - name: yarn test
         run: |
           yarn lint
-          yarn ts
 
 # Failing beacuse virtual framebuffer not installed
 #          yarn build-e2e
