@@ -60,17 +60,9 @@
       "package.json"
     ],
     "extraFiles": [
-      "node_modules/ffmpeg-static-electron/bin/${os}/${arch}/ffmpeg",
-      "node_modules/ffprobe-static-electron/bin/${os}/${arch}/ffprobe"
+      "node_modules/ffmpeg-static-electron/bin/${os}/${arch}",
+      "node_modules/ffprobe-static-electron/bin/${os}/${arch}"
     ],
-    "mac": {
-      "files": [
-        "!node_modules/ffmpeg-static-electron/bin/win${/*}",
-        "!node_modules/ffmpeg-static-electron/bin/linux{/*}",
-        "!node_modules/ffprobe-static-electron/bin/win${/*}",
-        "!node_modules/ffprobe-static-electron/bin/linux{/*}"
-      ]
-    },
     "dmg": {
       "contents": [
         {
