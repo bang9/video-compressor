@@ -2,6 +2,8 @@ import ffmpeg from 'fluent-ffmpeg';
 import fs from 'fs';
 import { remote } from 'electron';
 import path from 'path';
+import { EncodingMode } from '../components/Home';
+
 const { dialog, shell } = remote;
 
 type IEncodingCallback = (info: {
@@ -11,7 +13,10 @@ type IEncodingCallback = (info: {
 }) => void;
 
 // ffmpeg -i $line -codec:v libx264 -f mp4 -vf "scale=w=-2:h=min(ih\,540)" -movflags +faststart -threads 0 "./output/${name}.mp4"
-async function encodingDir(callback?: IEncodingCallback) {
+async function encodingDir(
+  callback?: IEncodingCallback,
+  mode: EncodingMode = EncodingMode.compress
+) {
   const inputPaths: string[] = [];
 
   const {
@@ -19,7 +24,10 @@ async function encodingDir(callback?: IEncodingCallback) {
     canceled: inputCanceled,
   } = await dialog.showOpenDialog({
     title: '입력 파일 폴더',
-    message: '동영상이 들어있는 폴더를 선택하세요',
+    message:
+      mode === EncodingMode.compress
+        ? 'MP4 동영상이 들어있는 폴더를 선택하세요'
+        : 'AVI/MOV/MPEG 동영상이 들어있는 폴더를 선택하세요',
     buttonLabel: '선택',
     properties: ['openDirectory'],
   });
@@ -30,8 +38,20 @@ async function encodingDir(callback?: IEncodingCallback) {
 
   const dir = fs.readdirSync(inputDir[0]);
   for (const filePath of dir) {
-    if (filePath.includes('mp4')) {
-      inputPaths.push(path.join(inputDir[0], filePath));
+    if (mode === EncodingMode.compress) {
+      if (filePath.includes('.mp4')) {
+        inputPaths.push(path.join(inputDir[0], filePath));
+      }
+    }
+    if (mode === EncodingMode.convert) {
+      if (
+        filePath.includes('.mov') ||
+        filePath.includes('.avi') ||
+        filePath.includes('.mpeg') ||
+        filePath.includes('.mpg')
+      ) {
+        inputPaths.push(path.join(inputDir[0], filePath));
+      }
     }
   }
 
@@ -59,12 +79,28 @@ async function encodingDir(callback?: IEncodingCallback) {
 
   for await (const [index, inputPath] of inputPaths.entries()) {
     await new Promise((resolve, reject) => {
-      ffmpeg(inputPath)
-        .noAudio()
-        .videoCodec('libx264')
-        .format('mp4')
-        .size('?x540')
-        .addOption(['-movflags', '+faststart', '-threads', '0'])
+      let generator = ffmpeg(inputPath);
+
+      if (mode === EncodingMode.compress) {
+        generator = generator
+          .noAudio()
+          .videoCodec('libx264')
+          .format('mp4')
+          .size('?x540')
+          .addOption(['-movflags', '+faststart', '-threads', '0']);
+      }
+
+      if (mode === EncodingMode.convert) {
+        generator = generator.addOption(['-crf', '0']).outputFormat('mp4');
+      }
+      const extension = path.extname(inputPath);
+
+      const resultPath =
+        mode === EncodingMode.compress
+          ? path.join(outputDir, path.basename(inputPath))
+          : path.join(outputDir, path.basename(inputPath, extension)) + '.mp4';
+
+      generator
         .on('progress', (progress) => {
           if (callback) {
             callback({
@@ -89,7 +125,7 @@ async function encodingDir(callback?: IEncodingCallback) {
           alert('에러가 발생\n' + err.toString());
           reject(err);
         })
-        .save(path.join(outputDir, path.basename(inputPath)));
+        .save(resultPath);
     });
   }
 }

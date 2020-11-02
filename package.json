@@ -1,7 +1,7 @@
 {
   "name": "simple-video-compressor",
   "productName": "Compressor",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "simple video compressor made with electron + ffmpeg",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
