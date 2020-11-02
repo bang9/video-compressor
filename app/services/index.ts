@@ -91,7 +91,11 @@ async function encodingDir(
       }
 
       if (mode === EncodingMode.convert) {
-        generator = generator.addOption(['-crf', '0']).outputFormat('mp4');
+        // crf 0 으로 사용할 경우, 4:4:2 설정돼서 출력됨
+        generator = generator
+          .videoCodec('libx264')
+          .addOption(['-crf', '4'])
+          .outputFormat('mp4');
       }
       const extension = path.extname(inputPath);
 
