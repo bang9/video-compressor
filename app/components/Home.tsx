@@ -8,6 +8,7 @@ export enum EncodingMode {
 }
 
 export default function Home() {
+  const [mute, setMute] = useState(true);
   const [current, setCurrent] = useState(0);
   const [total, setTotal] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -18,11 +19,15 @@ export default function Home() {
     setProgress(0);
     setTotal(0);
     setCurrent(0);
-    services.encodingDir(({ progress: p, current: c, total: t }) => {
-      setProgress(p);
-      setCurrent(c);
-      setTotal(t);
-    }, mode);
+    services.encodingDir(
+      ({ progress: p, current: c, total: t }) => {
+        setProgress(p);
+        setCurrent(c);
+        setTotal(t);
+      },
+      mode,
+      mute
+    );
   };
 
   const modeTitle = () => {
@@ -37,7 +42,17 @@ export default function Home() {
   return (
     <Container>
       <div style={{ flex: 1 }}>
+        <div style={{ marginBottom: 8 }}>
+          <input
+            type={'checkbox'}
+            checked={mute}
+            onChange={(e) => setMute(e.currentTarget.checked)}
+          />
+          <label>{'음소거'}</label>
+        </div>
+
         <select
+          style={{ marginBottom: 8 }}
           value={mode}
           onChange={(e) => {
             setMode(Number(e.currentTarget.value as unknown) as EncodingMode);

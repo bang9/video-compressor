@@ -15,7 +15,8 @@ type IEncodingCallback = (info: {
 // ffmpeg -i $line -codec:v libx264 -f mp4 -vf "scale=w=-2:h=min(ih\,540)" -movflags +faststart -threads 0 "./output/${name}.mp4"
 async function encodingDir(
   callback?: IEncodingCallback,
-  mode: EncodingMode = EncodingMode.compress
+  mode: EncodingMode = EncodingMode.compress,
+  mute: boolean = true
 ) {
   const inputPaths: string[] = [];
 
@@ -81,9 +82,12 @@ async function encodingDir(
     await new Promise((resolve, reject) => {
       let generator = ffmpeg(inputPath);
 
+      if (mute) {
+        generator = generator.noAudio();
+      }
+
       if (mode === EncodingMode.compress) {
         generator = generator
-          .noAudio()
           .videoCodec('libx264')
           .format('mp4')
           .size('?x540')
